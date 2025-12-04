@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ChevronDown, X } from "lucide-react"
 
 // Timeline data
@@ -205,7 +205,7 @@ function HeroSection() {
   }
 
   return (
-    <section className="min-h-screen pt-32 flex items-center justify-center bg-gradient-to-br from-blue-50 to-white">
+    <section className="min-h-screen pt-32 flex items-center justify-center bg-linear-to-br from-blue-50 to-white">
       <div className="max-w-4xl mx-auto px-6 text-center">
         <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6">A União Europeia</h1>
         <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
@@ -230,38 +230,58 @@ function HeroSection() {
 // Timeline section component
 function TimelineSection() {
   return (
-    <section id="timeline" className="py-24 bg-white">
+    <section id="timeline" className="py-20 md:py-24 bg-white">
       <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-5xl font-bold text-center mb-4 text-gray-900">Breve cronologia</h2>
-        <p className="text-center text-gray-600 mb-20 text-lg">Os marcos principais da história da União Europeia</p>
+        <h2 className="text-3xl md:text-5xl font-bold text-center mb-4 text-gray-900">Breve cronologia</h2>
+        <p className="text-center text-gray-600 mb-12 md:mb-20 text-base md:text-lg">
+          Os marcos principais da história da União Europeia
+        </p>
 
         <div className="relative">
-          {/* Vertical line */}
-          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-200 to-blue-600" />
+          {/* Vertical line for desktop */}
+          <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-linear-to-b from-blue-200 to-blue-600" />
 
-          <div className="space-y-12 md:space-y-0">
+          {/* Mobile timeline */}
+          <div className="space-y-6 md:hidden">
             {timelineEvents.map((event, index) => (
-              <div key={index} className={`md:flex md:mb-12 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}>
-                <div className="md:w-1/2 md:px-8">
-                  <div className="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow duration-300">
-                    <h3 className="text-2xl font-bold text-blue-600 mb-2">{event.year}</h3>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-3">{event.title}</h4>
-                    <p className="text-gray-600 leading-relaxed">{event.description}</p>
+              <div key={index} className="flex gap-4">
+                <div className="flex flex-col items-center">
+                  <div className="w-1 h-full bg-blue-100 rounded-full" />
+                </div>
+                <div className="flex-1">
+                  <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                    <h3 className="text-lg font-bold text-blue-600 mb-1">{event.year}</h3>
+                    <h4 className="text-base font-semibold text-gray-900 mb-2">{event.title}</h4>
+                    <p className="text-sm text-gray-600 leading-relaxed">{event.description}</p>
                   </div>
-                </div>
-
-                {/* Dot on timeline */}
-                <div className="hidden md:flex md:w-0 justify-center">
-                  <div className="w-5 h-5 bg-blue-600 rounded-full border-4 border-white shadow-lg" />
-                </div>
-
-                {/* Mobile dot */}
-                <div className="md:hidden flex items-start mb-8">
-                  <div className="w-4 h-4 bg-blue-600 rounded-full mt-2 mr-6 flex-shrink-0" />
-                  <div className="flex-1" />
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Desktop timeline */}
+          <div className="hidden md:block">
+            <div className="space-y-12">
+              {timelineEvents.map((event, index) => (
+                <div
+                  key={index}
+                  className={`md:flex md:mb-12 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}
+                >
+                  <div className="md:w-1/2 md:px-8">
+                    <div className="bg-gray-50 p-6 rounded-lg hover:shadow-lg transition-shadow duration-300">
+                      <h3 className="text-2xl font-bold text-blue-600 mb-2">{event.year}</h3>
+                      <h4 className="text-xl font-semibold text-gray-900 mb-3">{event.title}</h4>
+                      <p className="text-gray-600 leading-relaxed">{event.description}</p>
+                    </div>
+                  </div>
+
+                  {/* Dot on timeline */}
+                  <div className="hidden md:flex md:w-0 justify-center">
+                    <div className="w-5 h-5 bg-blue-600 rounded-full border-4 border-white shadow-lg" />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -281,7 +301,7 @@ function InstitutionModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl animate-in fade-in zoom-in-95 duration-300 my-6 sm:my-10">
         <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
           <h2 className="text-3xl font-bold text-gray-900">{institution.name}</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700 transition-colors">
@@ -293,7 +313,7 @@ function InstitutionModal({
           <img
             src={institution.image || "/placeholder.svg"}
             alt={institution.name}
-            className="w-full max-h-96 object-contain rounded-lg mb-6 bg-gray-50"
+            className="w-full max-h-[60vh] object-contain rounded-lg mb-6 bg-gray-50"
           />
           <p className="text-lg text-gray-700 leading-relaxed mb-6">{institution.details}</p>
           <button
@@ -340,7 +360,7 @@ function InstitutionsSection() {
                 />
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black via-black/30 to-transparent" />
 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
@@ -388,7 +408,7 @@ function InstitutionsSection() {
                   />
 
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black via-black/30 to-transparent" />
 
                 {/* Content */}
                 <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
@@ -468,7 +488,7 @@ function SourcesSection() {
               rel="noopener noreferrer"
               className="group p-6 bg-white rounded-lg border border-gray-300 shadow-md hover:border-blue-500 hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
             >
-              <h3 className="text-lg font-semibold text-blue-600 group-hover:text-blue-700 mb-2 break-words">
+              <h3 className="text-lg font-semibold text-blue-600 group-hover:text-blue-700 mb-2 wrap-break-word">
                 {source.label}
               </h3>
               <p className="text-sm text-gray-600 truncate group-hover:text-gray-800 transition-colors">{source.url}</p>
@@ -523,13 +543,18 @@ function Footer() {
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false)
 
-  const handleScroll = () => {
-    setScrolled(window.scrollY > 50)
-  }
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
 
-  if (typeof window !== "undefined") {
+    handleScroll()
     window.addEventListener("scroll", handleScroll, { passive: true })
-  }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-white">
